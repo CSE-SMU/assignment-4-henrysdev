@@ -1,9 +1,84 @@
-<html>
-  <head>
-    <title>Todo Application</title>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.14/angular.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css">
-  </head>
-  <body>
-  </body>
+<!doctype html>
+<!--
+ <ul>
+ <li ng-repeat="cust in customers | filter:{name:name} | orderBy:'name'">{{cust.name}} - {{cust.city}}</li>
+ </ul>
+ -->
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+            <title>todo</title>
+            <style>
+                .done{text-decoration: line-through;color:#ccc;}
+                </style>
+            <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+            <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div ng-app='ToDo'>
+            <div class="container">
+                <div ng-controller="controller">
+                    
+                    
+                    
+                    <p></p>
+                    <p></p>
+                    <button ng-click="orderByAttribute = 'title'" type="button" class="btn btn-warning">Order Alphabetically</button>
+                    <button ng-click="orderByAttribute = 'date'" type="button" class="btn btn-warning">Order by Date</button>
+                    <p></p>
+                    <p></p>
+                    <form name="frm" ng-submit="addTodo()">
+                        <input type="text" name="newTitle" ng-model="newTitle" placeholder="Task" required />
+                        <input type="text" name="newDesc" ng-model="newDesc" placeholder="Description" required />
+                        <input type="date" name="newDate" data-date-inline-picker="true" ng-model="newDate" placeholder="Date" required/>
+                        <button ng-disabled="frm.$invalid">Go</button>
+                    </form>
+                    </p>
+                    <p>
+                    <input type="text" ng-model="search">
+                    <ul>
+                        <li ng-repeat="todo in todos | filter:search | orderBy: orderByAttribute">
+                            <span ng-class="{'done':todo.done}" type = "btn btn-warning">{{todo.title}}
+                                <p>{{todo.desc}}</p>
+                                <p>{{todo.date}}</p>
+                                <label>Complete</label>
+                                <input type="checkbox" ng-model="todo.done" />
+                            </span>
+                        </li>
+                    </ul>
+                    </p>
+                    <button ng-click="clearCompleted()">Clear Completed</button>
+                </div>
+            </div>
+        </div>
+        <script>
+            var ToDo = angular.module('ToDo', []);
+                         ToDo.controller('controller', ['$scope', function ($scope)
+                                                        {
+                                                        $scope.search = '';
+                                                        $scope.orderByAttribute = '';
+                                                            $scope.todos = [];
+                                                            $scope.addTodo = function()
+                                                            {
+                                                                if($scope.newTitle !=' ' && $scope.newDesc !=' ')
+                                                                {
+                                                                    $scope.todos.push({'title':$scope.newTitle,'desc':$scope.newDesc,'date':$scope.newDate,'done':false, 'remove':false});
+                                                                    $scope.newTitle = ' ';
+                                                                    $scope.newDesc = ' ';
+                                                                    $scope.newDate = ' ';
+                                                                }
+                                                            }
+                                                            $scope.clearCompleted = function()
+                                                            {
+                                                                $scope.todos = $scope.todos.filter(function(item)
+                                                                {
+                                                                        return !item.done;
+                                                                })
+                                                            }
+                                                        }
+                                                        ]
+                                         )
+                                         
+        </script>
+    </body>
 </html>
